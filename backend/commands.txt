@@ -1,1 +1,1 @@
-npm install express body-parser zod jsonwebtoken mongoose dotenv
+npm install express body-parser zod jsonwebtoken mongoose dotenv cors
