@@ -3,10 +3,11 @@ const cors = require("cors");
 const rootRouter = require("./routers/index");
 const app = express();
 require('dotenv').config();
-const { mongoURL } = require("./config/config");
+const { mongodbURL } = require("./config/config");
+const mongoose = require("mongoose");
 
 // connect to db
-mongoose.connect(mongoURL);
+mongoose.connect(mongodbURL);
 
 
 app.use(cors());

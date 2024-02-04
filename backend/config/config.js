@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-modules.exports = {
+module.exports = {
   mongodbURL: process.env.DB_URL,
-  JWT_SECERT: "123456789",
+  JWT_SECRET: process.env.JWT_SECRET,
 };

@@ -1,13 +1,9 @@
+// user.js
 const express = require("express");
 const router = express.Router();
+const UserSignUp = require("../controllers/UserControllers"); 
 
 router
-  .get("/", async (req, res) => {
-    res.json({ message: "hello wold" });
-  })
+.post("/signup", UserSignUp);
 
-  .get("/hellos", async (req, res) => {
-    res.json("king");
-  });
-
-module.exports = router;
+module.exports = { router};
