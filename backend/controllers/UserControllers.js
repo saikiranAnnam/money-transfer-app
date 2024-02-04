@@ -2,7 +2,8 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const { JWT_SECRET } = require("../config/config");
-const signupBody = require("../validators/user");
+const signupBody = require("../validators/userSignup");
+const signinBody = require("../validators/userSignin");
 const Account = require("../models/account");
 
 const signup = async (req, res) => {
@@ -62,4 +63,39 @@ const signup = async (req, res) => {
   }
 };
 
-module.exports = signup;
+const signin = async (req, res) => {
+  const { success } = signinBody.safeParse(req.body);
+  if (!success) {
+    return res.status(411).json({
+      message: "Incorrect inputs",
+    });
+  }
+
+  const user = await User.findOne({
+    username: req.body.username,
+    password: req.body.password,
+  });
+
+  if (user) {
+    const token = jwt.sign(
+      {
+        userId: user._id,
+      },
+      JWT_SECRET
+    );
+
+    res.json({
+      token: token,
+    });
+    return;
+  }
+
+  res.status(411).json({
+    message: "Error while logging in",
+  });
+};
+
+module.exports = {
+  signup,
+  signin,
+};
