@@ -4,6 +4,7 @@ const User = require("../models/user");
 const { JWT_SECRET } = require("../config/config");
 const signupBody = require("../validators/userSignup");
 const signinBody = require("../validators/userSignin");
+const updateBody = require("../validators/userUpdate");
 const Account = require("../models/account");
 
 const signup = async (req, res) => {
@@ -95,7 +96,33 @@ const signin = async (req, res) => {
   });
 };
 
+const update = async (req, res) => {
+  try {
+    const { success } = updateBody.safeParse(req.body);
+    
+    if (!success) {
+      return res.status(411).json({
+        message: "Incorrect inputs",
+      });
+    }
+    await User.updateOne(req.body, {
+        id: req.userId
+    })
+
+    res.json({
+        message: "Updated successfully"
+    })
+
+  } catch (error) {
+    console.error("Error during updating user:", error);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+};
+
 module.exports = {
   signup,
   signin,
+  update,
 };
