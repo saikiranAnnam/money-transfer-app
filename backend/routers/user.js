@@ -7,6 +7,7 @@ const authMiddleware = require("../middlewares/userAuth");
 router
   .post("/signup", UserController.signup)
   .post("/signin", UserController.signin)
-  .put("/update", authMiddleware, UserController.update);
+  .put("/update", authMiddleware, UserController.update)
+  .get("/getUser", UserController.getUsers);
 
 module.exports = { router };

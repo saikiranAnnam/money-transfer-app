@@ -99,20 +99,19 @@ const signin = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { success } = updateBody.safeParse(req.body);
-    
+
     if (!success) {
       return res.status(411).json({
         message: "Incorrect inputs",
       });
     }
     await User.updateOne(req.body, {
-        id: req.userId
-    })
+      id: req.userId,
+    });
 
     res.json({
-        message: "Updated successfully"
-    })
-
+      message: "Updated successfully",
+    });
   } catch (error) {
     console.error("Error during updating user:", error);
     res.status(500).json({
@@ -121,8 +120,37 @@ const update = async (req, res) => {
   }
 };
 
+const getUsers = async (req, res) => {
+  const filter = req.query.filter || "";
+
+  const users = await User.find({
+    $or: [
+      {
+        firstname: {
+          $regex: filter,
+        },
+      },
+      {
+        lastname: {
+          $regex: filter,
+        },
+      },
+    ],
+  });
+
+  res.json({
+    user: users.map((user) => ({
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      _id: user._id,
+    })),
+  });
+};
+
 module.exports = {
   signup,
   signin,
   update,
+  getUsers,
 };
