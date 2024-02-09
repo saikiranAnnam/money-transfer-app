@@ -1,17 +1,17 @@
-import { useState } from "react";
 import { BottomWarning } from "../components/BottomWarning";
 import { Button } from "../components/Button";
 import { Heading } from "../components/Heading";
 import { InputBox } from "../components/InputBox";
 import { SubHeading } from "../components/SubHeading";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [firstname, setfirstname] = useState("");
+  const [lastname, setlastname] = useState("");
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
   const navigate = useNavigate();
 
   return (
@@ -22,28 +22,28 @@ export const Signup = () => {
           <SubHeading label={"Enter your infromation to create an account"} />
           <InputBox
             onChange={(e) => {
-              setFirstName(e.target.value);
+              setfirstname(e.target.value);
             }}
             placeholder="John"
             label={"First Name"}
           />
           <InputBox
             onChange={(e) => {
-              setLastName(e.target.value);
+              setlastname(e.target.value);
             }}
             placeholder="Doe"
             label={"Last Name"}
           />
           <InputBox
             onChange={(e) => {
-              setUsername(e.target.value);
+              setemail(e.target.value);
             }}
-            placeholder="harkirat@gmail.com"
+            placeholder="name@gmail.com"
             label={"Email"}
           />
           <InputBox
             onChange={(e) => {
-              setPassword(e.target.value);
+              setpassword(e.target.value);
             }}
             placeholder="123456"
             label={"Password"}
@@ -51,28 +51,17 @@ export const Signup = () => {
           <div className="pt-4">
             <Button
               onClick={async () => {
-                const requestBody = {
-                  username,
-                  firstName,
-                  lastName,
-                  password,
-                };
-
-                const headers = {
-                  "Content-Length": JSON.stringify(requestBody).length,
-                };
-
-                try {
-                  const response = await axios.post(
-                    "http://127.0.0.1/:3000/api/v1/user/signup",
-                    requestBody,
-                    { headers }
-                  );
-                  localStorage.setItem("token", response.data.token);
-                  navigate("/dashboard");
-                } catch (error) {
-                  console.error("Error:", error);
-                }
+                const response = await axios.post(
+                  "http://localhost:3000/api/v1/user/signup",
+                  {
+                    username: email,
+                    firstname,
+                    lastname,
+                    password,
+                  }
+                );
+                localStorage.setItem("token", response.data.token);
+                navigate("/dashboard");
               }}
               label={"Sign up"}
             />
